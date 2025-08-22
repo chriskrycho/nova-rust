@@ -106,7 +106,9 @@ export class RustLanguageServer {
         cargo: {
           extraEnv: this.envVars,
         },
-        checkOnSave: {
+        // TODO: this can and should be configurable!
+        checkOnSave: true,
+        check: {
           command: this.lintCommand,
           extraArgs: this.lintArgs,
         },
