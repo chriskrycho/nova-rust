@@ -2,104 +2,102 @@ import {
   envVarObject,
   onPreferenceChange,
   splitArgString,
-} from './preference-resolver'
+} from './preference-resolver';
 
 export class RustLanguageServer {
-  private languageClient: LanguageClient | null = null
-  private crashAlert: Disposable | null = null
-  private lintCommand = 'check'
-  private lintArgs: string[] = []
-  private envVars: Record<string, string> = {}
+  private languageClient: LanguageClient | null = null;
+  private crashAlert: Disposable | null = null;
+  private lintCommand = 'check';
+  private lintArgs: string[] = [];
+  private envVars: Record<string, string> = {};
 
   constructor() {
     onPreferenceChange(
       'com.chriskrycho.rust.lint-command',
       false,
       (cargoCommand: string) => {
-        this.lintCommand = cargoCommand
-        this.restart()
-      }
-    )
+        this.lintCommand = cargoCommand;
+        this.restart();
+      },
+    );
     onPreferenceChange(
       'com.chriskrycho.rust.lint-args',
       false,
       (lintArgs: string | null) => {
         if (lintArgs) {
-          this.lintArgs = splitArgString(lintArgs)
-          this.restart()
+          this.lintArgs = splitArgString(lintArgs);
+          this.restart();
         }
-      }
-    )
+      },
+    );
     onPreferenceChange(
       'com.chriskrycho.rust.env-vars',
       true,
       (varList: string[] | null) => {
-        this.envVars = envVarObject(varList || [])
-        this.restart()
-      }
-    )
+        this.envVars = envVarObject(varList || []);
+        this.restart();
+      },
+    );
   }
 
   get client(): LanguageClient | null {
-    return this.languageClient
+    return this.languageClient;
   }
 
   deactivate() {
-    this.stop()
+    this.stop();
   }
 
   restart() {
     if (this.crashAlert) {
-      this.crashAlert.dispose()
-      this.crashAlert = null
+      this.crashAlert.dispose();
+      this.crashAlert = null;
     }
     if (this.languageClient) {
       let alertDisposable = this.languageClient.onDidStop((err) => {
-        alertDisposable.dispose()
+        alertDisposable.dispose();
         if (err === undefined) {
-          this.start()
+          this.start();
         } else {
-          console.error(`Problem stopping client during restart: ${err}`)
+          console.error(`Problem stopping client during restart: ${err}`);
         }
-      })
-      this.languageClient.stop()
-      this.languageClient = null
+      });
+      this.languageClient.stop();
+      this.languageClient = null;
     } else {
-      this.start()
+      this.start();
     }
   }
 
   start() {
     if (this.languageClient) {
-      this.languageClient.stop()
+      this.languageClient.stop();
     }
 
-    let path = `${nova.extension.path}/bin/rust-analyzer`
+    let path = `${nova.extension.path}/bin/rust-analyzer`;
     // For use when extension-managed Rust Analyzer is malfunctioning
     if (this.envVars.hasOwnProperty('RA_PATH')) {
-      path = this.envVars['RA_PATH']
-      console.log(`Using Rust Analyzer at path: ${path}`)
+      path = this.envVars['RA_PATH'];
+      console.log(`Using Rust Analyzer at path: ${path}`);
     }
     // The Rust Analyzer binary won't exist when extension is first run
     // after installing.
     if (!nova.fs.access(path, nova.fs.F_OK + nova.fs.X_OK)) {
-      console.log('Rust Analyzer binary not found. Aborting start process.')
-      return
+      console.log('Rust Analyzer binary not found. Aborting start process.');
+      return;
     }
 
-    var serverOptions: ServerOptions = {
-      path: path,
-    }
-    if (nova.inDevMode()) {
-      serverOptions = {
-        path: '/bin/bash',
-        args: [
-          '-c',
-          `tee "${nova.extension.path}/../logs/nova-client.log" | ${path} | tee "${nova.extension.path}/../logs/lang-server.log"`,
-        ],
-      }
-    }
-    var clientOptions = {
+    const serverOptions: ServerOptions = nova.inDevMode()
+      ? {
+          path: '/bin/bash',
+          args: [
+            '-c',
+            `tee "${nova.extension.path}/../logs/nova-client.log" | ${path} | tee "${nova.extension.path}/../logs/lang-server.log"`,
+          ],
+        }
+      : { path };
+
+    const clientOptions = {
       // The set of document syntaxes for which the server is valid
       syntaxes: ['rust'],
       initializationOptions: {
@@ -113,39 +111,39 @@ export class RustLanguageServer {
           extraArgs: this.lintArgs,
         },
       },
-    }
-    var client = new LanguageClient(
+    };
+    const client = new LanguageClient(
       'rust',
       'Rust Analyzer',
       serverOptions,
-      clientOptions
-    )
+      clientOptions,
+    );
     this.crashAlert = client.onDidStop(async (err) => {
       // Error is undefined if server stopping was expected
-      console.error(`Language server stopped: ${err}`)
+      console.error(`Language server stopped: ${err}`);
       if (err !== undefined) {
-        let crashMsg = new NotificationRequest('server-crash')
-        crashMsg.title = nova.localize('Language Server Crash')
+        let crashMsg = new NotificationRequest('server-crash');
+        crashMsg.title = nova.localize('Language Server Crash');
         crashMsg.body = nova.localize(
           'Rust Analyzer has crashed. If this issue persists after restarting, ' +
-            'please open a bug report and include console messages.'
-        )
-        crashMsg.actions = [nova.localize('Restart'), nova.localize('Ignore')]
-        let resp = await nova.notifications.add(crashMsg)
-        this.stop()
+            'please open a bug report and include console messages.',
+        );
+        crashMsg.actions = [nova.localize('Restart'), nova.localize('Ignore')];
+        let resp = await nova.notifications.add(crashMsg);
+        this.stop();
         if (resp.actionIdx === 0) {
-          this.start()
+          this.start();
         }
       }
-    })
+    });
 
     try {
-      client.start()
-      this.languageClient = client
+      client.start();
+      this.languageClient = client;
     } catch (err) {
       // If the .start() method throws, it's likely because the path to the language server is invalid
       if (nova.inDevMode()) {
-        console.error(`Error with startup: ${err}`)
+        console.error(`Error with startup: ${err}`);
       }
     }
   }
@@ -153,17 +151,17 @@ export class RustLanguageServer {
   stop() {
     // Don't treat as crash if intentionally stopping it.
     if (this.crashAlert) {
-      this.crashAlert.dispose()
-      this.crashAlert = null
+      this.crashAlert.dispose();
+      this.crashAlert = null;
     }
     if (this.languageClient) {
-      this.languageClient.stop()
-      this.languageClient = null
+      this.languageClient.stop();
+      this.languageClient = null;
     }
   }
 }
 
 interface ServerOptions {
-  path: string
-  args?: string[]
+  path: string;
+  args?: string[];
 }
