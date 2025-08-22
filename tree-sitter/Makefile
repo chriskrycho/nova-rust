@@ -28,7 +28,7 @@ ifneq ("$(wildcard $(SRC_DIR)/scanner.cc)", "")
 endif
 
 ifeq (, $(CPPSRC))
-	ADDITIONALLIBS := 
+	ADDITIONALLIBS :=
 else
 	ADDITIONALLIBS := -lc++
 endif
