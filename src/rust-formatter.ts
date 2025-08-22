@@ -3,11 +3,11 @@ export class RustFormatter {
   private nightly: boolean = false
 
   constructor() {
-    nova.config.observe('com.kilb.rust.rustfmt-on-save', (enabled: boolean) => {
+    nova.config.observe('com.chriskrycho.rust.rustfmt-on-save', (enabled: boolean) => {
       this.enabled = enabled
     })
     nova.config.observe(
-      'com.kilb.rust.rustfmt-nightly',
+      'com.chriskrycho.rust.rustfmt-nightly',
       (useNightly: boolean) => {
         this.nightly = useNightly
       }

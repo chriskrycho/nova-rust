@@ -8,10 +8,10 @@ export class RustIssueProvider {
   private checkArgs: string[] = []
 
   constructor() {
-    nova.config.observe('com.kilb.rust.lint-command', (cmd: string) => {
+    nova.config.observe('com.chriskrycho.rust.lint-command', (cmd: string) => {
       this.command = cmd
     })
-    nova.config.observe('com.kilb.rust.lint-args', (args: string | null) => {
+    nova.config.observe('com.chriskrycho.rust.lint-args', (args: string | null) => {
       if (args) this.checkArgs = args.trim().split(' ')
     })
   }

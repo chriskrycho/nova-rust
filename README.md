@@ -4,7 +4,7 @@ This project brings [Rust Language](https://www.rust-lang.org/) support to the [
 
 ## Users
 
-Nova users can install this extension from Nova's [Extension Library](https://extensions.panic.com/), available within the app. More information for users is available in the [extension details](https://github.com/kilbd/nova-rust/blob/main/Rust.novaextension/README.md).
+Nova users can install this extension from Nova's [Extension Library](https://extensions.panic.com/), available within the app. More information for users is available in the [extension details](https://github.com.chriskrycho/nova-rust/blob/main/Rust.novaextension/README.md).
 
 ## Developers
 
@@ -19,7 +19,7 @@ Nova users can install this extension from Nova's [Extension Library](https://ex
 This project depends on the `tree-sitter-rust` project, so you'll need to pull down the submodule when you clone or after cloning:
 
 ```shell
-git clone --recurse-submodules https://github.com/kilbd/nova-rust
+git clone --recurse-submodules https://github.com.chriskrycho/nova-rust
 # OR after cloning you can run
 git submodule update --init --recursive
 ```
@@ -53,4 +53,4 @@ After the scripts are transpiled, you can test the extension in Nova by selectin
 
 ### Contributing
 
-If you'd like to contribute code, please see the [CONTRIBUTING.md](https://github.com/kilbd/nova-rust/blob/main/CONTRIBUTING.md) document for tips.
+If you'd like to contribute code, please see the [CONTRIBUTING.md](https://github.com.chriskrycho/nova-rust/blob/main/CONTRIBUTING.md) document for tips.
