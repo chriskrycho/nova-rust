@@ -8,4 +8,4 @@ Nova users can install this extension from Nova's [Extension Library](https://ex
 
 ## Developers
 
-See [CONTRIBUTING.md](./CONTRIBUTING.md) for details on building the app.
+See [BUILD.md](./BUILD.md) for details on building the app and [CONTRIBUTING.md](./CONTRIBUTING.md) for guidance on interacting with the open source project.
