@@ -2,6 +2,11 @@
 
 This project brings [Rust Language](https://www.rust-lang.org/) support to the [Nova text editor](https://nova.app/) (macOS only). It is written in TypeScript for static typing, but transpiled to run in the macOS JavaScript environment using [Nova's API](https://docs.nova.app/) for extensions. This extension provides Rust developers with syntax highlighting, assistance from the Rust Analyzer language server, error checking, and automatic formatting.
 
+This particular extension is a descendant of [the original Nova Rust extension][nr1] created by [Drew Kilb][dk]!
+
+[nr1]: https://github.com/kilbd/nova-rust/
+[dk]: https://github.com/kilbd
+
 ## Users
 
 Nova users can install this extension from Nova's [Extension Library](https://extensions.panic.com/), available within the app. More information for users is available in the [extension details](https://github.com.chriskrycho/nova-rust/blob/main/Rust.novaextension/README.md).
