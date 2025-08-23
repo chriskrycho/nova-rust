@@ -16,12 +16,16 @@ fi
 
 if [[ $download = true ]]; then
     echo "downloading new binary..."
-    binary="rust-analyzer-x86_64-apple-darwin.gz"
-    if [[ "$(uname -p)" = "arm" ]]; then
-        binary="rust-analyzer-aarch64-apple-darwin.gz"
+    binary="rust-analyzer-aarch64-apple-darwin.gz"
+    if [[ "$(uname -p)" = "x86_64" ]]; then
+        binary="rust-analyzer-x86_64-apple-darwin.gz"
     fi
     curl -L --fail --silent --show-error \
         https://github.com/rust-lang/rust-analyzer/releases/latest/download/$binary \
         | gunzip -c - > ./rust-analyzer-new
     chmod +x ./rust-analyzer-new
+    if [[ ! -f "./rust-analyzer" ]]; then
+        mv ./rust-analyzer ./rust-analyzer-old
+    fi
+    mv ./rust-analyzer-new ./rust-analyzer
 fi
