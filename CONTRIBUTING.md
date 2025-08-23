@@ -7,13 +7,11 @@ You're interested in making this project better? Thank you! Below are some ways 
 ### Requirements
 
 - The Nova app, of course.
-
 - [Node](https://nodejs.org/) and the **pnpm** package manager that comes with it: to build the scripts for this extension.
-
-  > [!NOTE]
-  > You can use [mise](https://mise.jdx.dev) to manage _many_ development environments, and if you have it set up on your machine, you will get the same versions as this project uses automatically.
-
 - **XCode**: to build the Tree Sitter library (Command Line Tools from Apple may suffice)
+
+> [!NOTE]
+> You can use [mise](https://mise.jdx.dev) to manage _many_ development environments, and if you have it set up on your machine, you will get the same versions of Node and pnpm as this project uses automatically.
 
 ### Setting Up the Dev Environment
 
