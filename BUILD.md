@@ -20,9 +20,7 @@ pnpm install
 Next, run the `update_server.sh` script to download the Rust Analyzer binary:
 
 ```shell
-cd Rust.novaextension/bin/
-./update_server.sh
-cd ../..
+./Rust.novaextension/bin/update_server.sh
 ```
 
 > [!NOTE]
