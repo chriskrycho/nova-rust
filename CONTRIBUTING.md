@@ -7,7 +7,7 @@ You're interested in making this project better? Thank you! Below are some ways 
 ### Requirements
 
 - The Nova app, of course.
-- [Node](https://nodejs.org/) and the **pnpm** package manager that comes with it: to build the scripts for this extension.
+- [Node](https://nodejs.org/) and [the **pnpm** package manager](https://pnpm.io): to build the TypeScript source for this extension.
 - **XCode**: to build the Tree Sitter library (Command Line Tools from Apple may suffice)
 
 > [!NOTE]
